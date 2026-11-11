@@ -4,3 +4,6 @@ dist/
 work/
 .env*
 .vercel/
+
+.vercel
+.env*

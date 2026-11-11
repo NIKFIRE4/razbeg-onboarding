@@ -16,3 +16,9 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - Status labels must fit Cyrillic text at desktop and mobile widths; minimum 11px type, explicit line-height, no forced small height or shrinking.
 - Reusable role templates retain individual progress. Only HR-reviewed answers may be reused. PDF, DOC and DOCX are parsed locally.
 - Latest user feedback: field and select text must be readable (15px), ordinary buttons 14px, captions at least 12px. Compound search has exactly one border/focus ring on its outer wrapper. Select chevron has a fixed 16px size.
+
+## Cloud publication authorized
+
+- User now explicitly requested GitHub and Vercel deployment, superseding the earlier local-only restriction. GitHub repository must be public.
+- Publish a Vercel preview with persistent Neon storage. Keep local SQLite working. Secrets remain in ignored environment files.
+- Cloud demo contains shared fictional data, open demo roles and a clearly disclosed global reset; real HR use requires authorization.
