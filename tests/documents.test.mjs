@@ -1,0 +1,10 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
+import {extractDocument} from '../server/documents.mjs';
+for(const ext of ['doc','docx','pdf'])test(`real ${ext} extraction`,async()=>{const b=await readFile(new URL(`./fixtures/sample.${ext}`,import.meta.url));const r=await extractDocument(b,`sample.${ext}`);assert.ok(r.text.trim().length>20);if(ext==='pdf')assert.match(r.text,/Synthetic resume/);});
+test('UTF-8 text supported',async()=>{const r=await extractDocument(Buffer.from('Вымышленный аналитик. Удалённая работа.'),'resume.txt');assert.match(r.text,/аналитик/)});
+test('renamed DOCX cannot pretend to be DOC',async()=>{const b=await readFile(new URL('./fixtures/sample.docx',import.meta.url));await assert.rejects(()=>extractDocument(b,'fake.doc'),/соответствует/)});
+test('unsupported, empty, oversized, corrupt documents rejected',async()=>{await assert.rejects(()=>extractDocument(Buffer.from('data'),'a.exe'));await assert.rejects(()=>extractDocument(Buffer.alloc(0),'empty.pdf'));await assert.rejects(()=>extractDocument(Buffer.alloc(8*1024*1024+1),'big.doc'));await assert.rejects(()=>extractDocument(Buffer.from('not really pdf'),'a.pdf'));});
+for(const ext of ['pdf','docx'])test(`Cyrillic ${ext} text preserved`,async()=>{const r=await extractDocument(await readFile(new URL(`./fixtures/russian.${ext}`,import.meta.url)),`resume.${ext}`);assert.match(r.text,/Вымышленный аналитик/);assert.match(r.text,/Удалённая работа/)});
+test('PDF without a text layer produces honest OCR message',async()=>{const b=await readFile(new URL('./fixtures/empty.pdf',import.meta.url));await assert.rejects(()=>extractDocument(b,'scan.pdf'),/OCR не включён/)});
