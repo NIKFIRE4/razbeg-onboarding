@@ -40,6 +40,8 @@ Node.js 22.12 или новее. `npm ci`, затем `npm run dev`. Скрип�
 
 ## Vercel
 
+Рабочая версия: https://razbeg-onboarding.vercel.app/
+
 - Исходники: https://github.com/NIKFIRE4/razbeg-onboarding (публичный репозиторий).
 - Vercel Functions в `api/` используют тот же HTTP-контракт, что локальный сервер.
 - Создайте Neon на бесплатном тарифе и подключите `DATABASE_URL` к окружению preview. Не добавляйте этот секрет в Git.
